@@ -1,7 +1,9 @@
 :root {
   --gap-number: 10px;
-  --dark-blue-color: #080f36;
-  --green-color: #28ce19;
+  --light-blue-color: #2f475b;
+  --blue-color: #314f6c;
+  --dark-blue-color: #243240;
+  --green-color: #3ddc7f;
   --white-color: #fafafa;
   --text-color: #eee;
   --black-color: #151515;
@@ -74,4 +76,12 @@ body {
 
 h1 {
   color: var(--green-color);
+}
+
+.box-list-items {
+  background-color: var(--light-blue-color);
+}
+
+.box-list-check {
+  background-color: var(--blue-color);
 }

@@ -22,7 +22,10 @@ export default function Lists() {
       <h1>Listas</h1>
       <ul>
         {listas?.map((lista) => (
-          <li key={lista.id}>{lista.title_show}</li>
+          <li key={lista.id}>
+            <div className="box-list-items">{lista.title_show}</div>
+            <div className="box-list-check">Check</div>
+          </li>
         ))}
       </ul>
     </div>

@@ -19,7 +19,7 @@ export default function Lists() {
 
   return (
     <div>
-      <h1>Listas</h1>
+      <h1>Listas Appwrite</h1>
       <ul>
         {listas?.map((lista) => (
           <li key={lista.id}>

@@ -1,16 +1,16 @@
-import { useState } from "react";
-import "./App.css";
-import Layout from "./components/Layout";
-import { Client } from "appwrite";
+import { Routes, Route } from "react-router-dom";
+import Layout from "@/components/Layout";
+import Home from "@/pages/home/Home";
+import Lists from "@/pages/list/Lists";
 
 function App() {
-  const client = new Client();
-  client.setProject("66e24eba003d137710bb");
-  
   return (
-    <>
-      <Layout />
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="/lists" element={<Lists />} />
+      </Route>
+    </Routes>
   );
 }
 

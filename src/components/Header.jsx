@@ -1,53 +1,40 @@
-import React from "react";
+import { useState } from "react";
+import { Avatar } from "primereact/avatar";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "./LanguageSelector";
+// import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import Search from "./Search";
+import { Button } from "primereact/button";
 
-export default function Header() {
+export default function Navbar() {
+  const { t } = useTranslation();
+  const [loggedInName] = useState({
+    first_name: "Martin",
+    last_name: "Brumana",
+  });
+  console.log(loggedInName);
+
   return (
-    <header className="d-flex justify-content-between p-3">
-      <a href="/" className="wrap-logo">
-        <img className="logo" src="./img/logo.png" alt="checklist" />
-        <span>
-          <strong>Check</strong>List
-        </span>
-      </a>
+    <nav className="position-sticky top-0 p-2">
+      <Search />
 
-      <div className="">
-        <form action="" className="search-bar">
-          <input type="search" name="search" pattern=".*\S.*" required />
-          <button className="search-btn" type="submit">
-            <span>Search</span>
-          </button>
-        </form>
-      </div>
-
-      <div className="wrap-user">
-        <div className="user-panel">
-          <div className="show-fav-list">
-            <div
-              className="user-list-img"
-              // style="background-image: url(./img/imgList/argentina.png)"
-            >
-              &nbsp;
-            </div>
-            <div>
-              100 cosas para hacer en
-              <br />
-              <strong>Argentina</strong>
-            </div>
-          </div>
-        </div>
-
-        <div className="user">
-          <a href="#!" className="user-avatar" title="edit">
-            <img src="./img/useravatar.png" alt="Martina" />
-          </a>
-          <a href="#!" className="user-name">
-            Martin
-          </a>
-          <a href="#!" className="user-menu">
-            &#8942;
-          </a>
+      <div className="d-flex align-items-center">
+        <Link className="navbar-name" to={"/settings"}>
+          <span>
+            {loggedInName.first_name} {loggedInName.last_name}
+          </span>
+          <Avatar
+            image="https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png"
+            className="mr-2"
+            size="large"
+            shape="circle"
+          />
+        </Link>
+        <div className="ps-2 ms-2">
+          <LanguageSelector />
         </div>
       </div>
-    </header>
+    </nav>
   );
 }

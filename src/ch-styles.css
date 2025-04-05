@@ -2,19 +2,21 @@
 /* vars */
 
 :root {
-  --gap-number: 40px;
-  --red-color: #e94560;
-  --green-color: #45e960;
-  --violet-color: #533483;
-  --wh-color: #f1f1f1;
-  --line-color: #f1f1f162;
-  --bg-light: #0f3460;
-  --bg-color: #1b2c47;
-  --text-color: #eeeeee;
-  --font-size: 14px;
+  --pt-blue: #29266b !important;
+  --pt-pink: #fe5282 !important;
+  --bs-success: #28a745 !important;
+  --bg-white-color: #eeedeb;
+  --white-color: #fcfbf9;
+  --text: #656565;
+  --line-color: #cacaca;
+  --black-color: #202020;
+  --font-size: 13px;
+  --gap: 16px;
   --font-family: "Poppins", sans-serif;
-  --border-radius: 3px;
-  --box-shadow: 10px 10px 40px 1px rgba(0, 0, 0, 0.21);
+  --title-family: "Oswald", sans-serif;
+  --border-radius: 16px !important;
+  --box-shadow: 10px 5px 40px 1px rgba(0, 0, 0, 0.1);
+  --swiper-theme-color: #ff4e00;
 }
 
 /* Reset */
@@ -65,11 +67,113 @@ button {
 }
 
 body {
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
+  background: var(--bg-white-color);
+  color: var(--text);
+  min-width: 800px;
+  overflow-x: hidden;
 }
+
+.panel {
+  background-color: var(--white-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+}
+
+/* nav */
+
+.wrap-logo,
+nav {
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  height: 60px;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(238, 237, 235, 0.2); /* tu color con opacidad */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: -1; /* detrás del contenido */
+}
+
+.navbar-name {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  gap: 5px;
+}
+
+.nav-link {
+  color: var(--black-color) !important;
+
+  & i {
+    background: transparent;
+    padding: 4px 6px;
+    border-radius: 10px;
+  }
+
+  &.active {
+    color: var(--pt-blue);
+    font-weight: bold !important;
+
+    & i {
+      background: var(--pt-pink);
+      color: #fff;
+      padding: 4px 6px;
+      border-radius: 10px;
+    }
+  }
+}
+
+.nav-link.detail {
+  color: var(--white-color) !important;
+  text-decoration: none;
+  background: var(--pt-blue);
+  border-radius: 20px;
+  margin-top: 30px;
+}
+
+/* searchbar */
+.searchbar-container {
+  width: 300px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.searchbar-icon {
+  background-color: var(--bg-light);
+  border: none;
+  border-radius: 20px 0px 0px 20px;
+}
+
+.searchbar-input {
+  width: 100%;
+  border-radius: 0px 20px 20px 0px;
+  border: none;
+}
+
+.searchbar-input:enabled:focus {
+  box-shadow: none;
+}
+
 /* structure */
 
 .bk-listas {

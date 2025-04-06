@@ -16,7 +16,7 @@ export default function Navbar() {
   console.log(loggedInName);
 
   return (
-    <nav className="position-sticky top-0 p-2">
+    <nav>
       <Search />
 
       <div className="d-flex align-items-center">

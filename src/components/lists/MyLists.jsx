@@ -46,11 +46,30 @@ export default function MyLists() {
       highlight: "Argentina",
       image: "https://placehold.co/50x50",
     },
+    {
+      id: 8,
+      title:
+        "100 cosas para hacer en New World si ya terminaste la misión principal y querés seguir jugando",
+      highlight: "New World",
+      image: "https://placehold.co/50x50",
+    },
+    {
+      id: 9,
+      title: "100 cosas para hacer en Bariloche con nieve o sin ella",
+      highlight: "Bariloche",
+      image: "https://placehold.co/50x50",
+    },
+    {
+      id: 10,
+      title: "100 planes familiares en Argentina para todas las edades",
+      highlight: "Argentina",
+      image: "https://placehold.co/50x50",
+    },
   ];
 
   return (
     <>
-      <ul className="list-unstyled">
+      <ul className="my-lists">
         {items.map((item) => (
           <ThumbList key={item.id} item={item} />
         ))}

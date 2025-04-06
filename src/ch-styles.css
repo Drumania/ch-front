@@ -5,8 +5,8 @@
   --green: #46ef61 !important;
   --mid-green: #42ab53 !important;
   --deep-green: #3d6243 !important;
-  --bg-panel-color: #05141d;
-  --bg-color: #0d202b;
+  --bg-color: #05141d;
+  --bg-panel-color: #0d202b;
   --white-color: #fafafa;
   --text: #fafafa;
   --line-color: #cacaca;
@@ -27,7 +27,6 @@ html {
   font-size: var(--font-size);
   font-family: var(--font-family);
   font-weight: 400;
-  background-color: var(--bg-color);
   color: var(--text-color);
   scrollbar-color: var(--bg-light) #080e1d;
   scrollbar-width: 5px;
@@ -78,10 +77,36 @@ button {
 }
 
 body {
-  background: var(--bg-white-color);
+  background: rgb(13, 32, 43);
+  background: radial-gradient(
+    circle,
+    rgba(13, 32, 43, 1) 0%,
+    rgba(5, 20, 29, 1) 100%
+  );
   color: var(--text);
   min-width: 800px;
   overflow-x: hidden;
+}
+
+html {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #062b414f transparent;
+  scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar {
+  width: 6px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 1px solid transparent;
 }
 
 .panel {
@@ -96,10 +121,13 @@ aside {
   flex-direction: column;
   align-items: stretch;
   height: 100vh;
+  width: 100%;
   justify-content: space-between;
 }
 
 .img-logo {
+  position: fixed;
+  height: 60px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -119,66 +147,52 @@ aside {
   }
 }
 
-.nav-link {
-  color: var(--text-color) !important;
+.wrap-my-lists {
+  top: 60px;
+  position: fixed;
+  height: calc(100vh - 60px);
+  width: inherit;
+  width: 16.66666667%;
 
-  & i {
-    background: transparent;
-    padding: 4px 6px;
-    border-radius: 10px;
+  & small {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    line-height: 30px;
   }
 
-  &.active {
-    color: var(--green);
-    font-weight: bold !important;
-
-    & i {
-      background: var(--green);
-      color: var(--white-color);
-      padding: 4px 6px;
-      border-radius: 10px;
-    }
+  & .my-lists {
+    position: fixed;
+    height: calc(100vh - 60px - 30px);
+    overflow-x: auto;
+    width: 16.66666667%;
   }
 }
 
-.nav-link.detail {
-  color: var(--white-color) !important;
-  text-decoration: none;
-  background: var(--mid-green);
-  border-radius: 20px;
-  margin-top: 30px;
+/* header */
+
+.wrap-header {
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* nav */
-
-nav {
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-nav {
+.header-fixed {
   position: sticky;
   top: 0;
+  z-index: 1000;
+}
+
+nav {
+  flex-direction: row;
+  position: sticky;
+  top: 0;
+
   height: 60px;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem;
-  background-color: transparent;
   overflow: hidden;
-}
-
-nav::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* background-color: rgba(238, 237, 235, 0.2); 
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); */
-  z-index: -1; /* detrás del contenido */
 }
 
 .navbar-name {
@@ -263,11 +277,11 @@ header .wrap-user {
 
 /* search */
 
-.search-bar {
+.searchbar-icon {
+  background-color: var(--bg-panel-color);
 }
 
-input[type="search"] {
-  background-color: #393939;
+.searchbar-input input[type="search"] {
   border: 1px solid #393939;
   color: var(--wh-color);
   line-height: 40px;
@@ -278,10 +292,15 @@ input[type="search"] {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
   background-position: 95% center;
   background-repeat: no-repeat;
-  width: 340px;
+  width: 300px;
 }
 
-input[type="search"]:focus {
+.searchbar-input {
+  background-color: var(--bg-panel-color);
+}
+
+.searchbar-input input[type="search"]:focus {
+  background-color: var(--bg-panel-color);
   border: none;
   outline: none;
 }

@@ -48,7 +48,9 @@ export default function Sidebar() {
         <MyLists />
 
         <div className="wrap-new-list">
-          <Button className="btn-new-list" label="Nueva lista"></Button>
+          <Link to="/crear-lista">
+            <button className="btn-new-list">Crear nueva lista</button>
+          </Link>
         </div>
       </div>
     </>

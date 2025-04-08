@@ -13,6 +13,7 @@
     "appwrite": "^16.0.2",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.4",
+    "firebase": "^11.6.0",
     "i18next": "^24.2.3",
     "i18next-browser-languagedetector": "^8.0.4",
     "primeicons": "^7.0.0",

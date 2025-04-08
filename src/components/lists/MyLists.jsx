@@ -1,79 +1,82 @@
-// MyLists.jsx
+import { useEffect, useState } from "react";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db, auth } from "@/firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
 import ThumbList from "./ThumbList";
 
 export default function MyLists() {
-  const items = [
-    {
-      id: 1,
-      title: "100 cosas para hacer en Argentina",
-      highlight: "Argentina",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 2,
-      title: "10 lugares para visitar en Campana",
-      highlight: "Campana",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 3,
-      title: "10 Imprescindibles de Paris",
-      highlight: "Paris",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 4,
-      title: "100 Restaurantes en Capital Federal, Argentina",
-      highlight: "Capital Federal, Argentina",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 5,
-      title:
-        "100 cosas para hacer en New World si ya terminaste la misión principal y querés seguir jugando",
-      highlight: "New World",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 6,
-      title: "100 cosas para hacer en Bariloche con nieve o sin ella",
-      highlight: "Bariloche",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 7,
-      title: "100 planes familiares en Argentina para todas las edades",
-      highlight: "Argentina",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 8,
-      title:
-        "100 cosas para hacer en New World si ya terminaste la misión principal y querés seguir jugando",
-      highlight: "New World",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 9,
-      title: "100 cosas para hacer en Bariloche con nieve o sin ella",
-      highlight: "Bariloche",
-      image: "https://placehold.co/50x50",
-    },
-    {
-      id: 10,
-      title: "100 planes familiares en Argentina para todas las edades",
-      highlight: "Argentina",
-      image: "https://placehold.co/50x50",
-    },
-  ];
+  const [user, setUser] = useState(null);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Espera a que Firebase determine si hay un usuario logueado
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      setUser(u);
+    });
+    return () => unsub();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserLists = async () => {
+      if (!user) return;
+
+      try {
+        const q = query(
+          collection(db, "listas_usuarios"),
+          where("userId", "==", user.uid)
+        );
+        const snapshot = await getDocs(q);
+        const data = snapshot.docs.map((doc) => {
+          const lista = doc.data();
+          const total = lista.items.length;
+          const completados = lista.items.filter((item) => item.checked).length;
+          const progress = total ? Math.round((completados / total) * 100) : 0;
+
+          return {
+            id: doc.id,
+            title: lista.nombre,
+            highlight: lista.categoria,
+            image: obtenerImagenCategoria(lista.categoria),
+            progress,
+          };
+        });
+        setItems(data);
+      } catch (err) {
+        console.error("Error al cargar tus listas:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserLists();
+  }, [user]);
+
+  if (loading) return <p className="text-center">Cargando tus listas...</p>;
+
+  if (!user)
+    return <p className="text-center">Iniciá sesión para ver tus listas.</p>;
 
   return (
     <>
       <ul className="my-lists">
-        {items.map((item) => (
-          <ThumbList key={item.id} item={item} />
-        ))}
+        {items.length ? (
+          items.map((item) => <ThumbList key={item.id} item={item} />)
+        ) : (
+          <p className="text-center">Aún no agregaste ninguna lista.</p>
+        )}
       </ul>
     </>
   );
+}
+
+function obtenerImagenCategoria(categoria) {
+  const imagenes = {
+    Viajes: "https://source.unsplash.com/50x50/?travel",
+    Anime: "https://source.unsplash.com/50x50/?anime",
+    Gaming: "https://source.unsplash.com/50x50/?gaming",
+    "Vida saludable": "https://source.unsplash.com/50x50/?healthy",
+  };
+
+  return imagenes[categoria] || "https://placehold.co/50x50";
 }

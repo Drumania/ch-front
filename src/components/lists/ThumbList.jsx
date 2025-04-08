@@ -1,23 +1,24 @@
-import { Tooltip } from "primereact/tooltip";
+// src/components/ThumbList.jsx
+import { Link } from "react-router-dom";
+
 export default function ThumbList({ item }) {
-  const [before, after] = item.title.split(item.highlight);
-
   return (
-    <>
-      <Tooltip target=".has-tooltip" />
-
-      <li className="my-list cursor-pointer d-flex gap-2 align-items-start mb-3">
-        <img src={item.image} alt={item.highlight} />
-        <div
-          className="has-tooltip"
-          data-pr-tooltip={item.title}
-          data-pr-position="top"
-        >
-          {before}
-          <strong>{item.highlight}</strong>
-          {after}
+    <li className="thumb-list-item">
+      <Link
+        to={`/mis-listas/${item.id}`}
+        className="d-flex align-items-center gap-3 text-decoration-none"
+      >
+        <img src={item.image} alt="" width={50} height={50} />
+        <div>
+          <h5 className="mb-1">{item.title}</h5>
+          <small className="text-muted">{item.highlight}</small>
+          {item.progress !== undefined && (
+            <p className="mb-0 small text-success">
+              ✅ {item.progress}% completado
+            </p>
+          )}
         </div>
-      </li>
-    </>
+      </Link>
+    </li>
   );
 }

@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebase/config";
+import { useSlugify } from "@/hooks/useSlugify";
 
 export default function Navbar() {
+  const { slugify } = useSlugify();
   const [categories, setCategories] = useState([]);
   const location = useLocation();
   const activePath = location.pathname;
@@ -37,10 +39,10 @@ export default function Navbar() {
       <div className="category-scroll-wrapper">
         <div className="category-scroll">
           {[
-            { label: "Todas", to: "/listas-publicas", icon: "📋" },
+            { label: "Todas", to: "/categorias", icon: "📋" },
             ...categories,
           ].map((cat) => {
-            const path = cat.to || `/categorias/${cat.id}`;
+            const path = cat.to || `/categorias/${slugify(cat.nombre)}`;
             const icon = cat.icono || "📁";
             const label = cat.label || cat.nombre;
 

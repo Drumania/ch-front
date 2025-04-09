@@ -8,6 +8,7 @@ import {
   where,
   serverTimestamp,
 } from "firebase/firestore";
+import { useSlugify } from "@/hooks/useSlugify";
 
 export default function CrearLista() {
   const [titulo, setTitulo] = useState("");
@@ -16,6 +17,8 @@ export default function CrearLista() {
   const [items, setItems] = useState([""]);
   const [guardando, setGuardando] = useState(false);
   const user = auth.currentUser;
+
+  const { slugify } = useSlugify(); // Hook para generar slug
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -50,6 +53,8 @@ export default function CrearLista() {
 
     if (itemsFiltrados.length === 0) return;
 
+    const slug = slugify(categoria); // genera el slug
+
     setGuardando(true);
 
     try {
@@ -57,6 +62,7 @@ export default function CrearLista() {
       const publicRef = await addDoc(collection(db, "listas_publicas"), {
         nombre: titulo,
         categoria,
+        slug_categoria: slug,
         creadorId: user.uid,
         createdAt: serverTimestamp(),
         items: itemsFiltrados,
@@ -70,6 +76,7 @@ export default function CrearLista() {
         userId: user.uid,
         nombre: titulo,
         categoria,
+        slug_categoria: slug,
         items: itemsFiltrados,
         createdAt: serverTimestamp(),
         completada: false,

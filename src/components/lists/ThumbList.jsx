@@ -11,6 +11,11 @@ export default function ThumbList({ item, onToggleFavorite }) {
       >
         <img src={item.image} alt="" width={50} height={50} />
         <div>
+          {item.added && (
+            <span className="badge bg-success position-absolute top-0 end-0 m-1">
+              ✅ Agregada
+            </span>
+          )}
           <h5 className="mb-1">{item.title}</h5>
           <small className="text-muted">{item.highlight}</small>
           {item.progress !== undefined && (

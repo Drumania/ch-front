@@ -130,6 +130,28 @@ header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.img-logo {
+  position: fixed;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 12px 10px;
+  text-decoration: none;
+
+  & h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 0 0 10px;
+    color: var(--text);
+  }
+
+  & img {
+    width: 40px;
+  }
+}
+
 .header-user {
   display: flex;
   justify-content: flex-end;
@@ -211,125 +233,13 @@ header {
 
 /* main */
 main {
-  min-height: 100vh;
+  min-height: calc(100vh - 160px);
 }
 
 .panel {
   background-color: var(--bg-panel-color);
   border-radius: var(--border-radius);
   margin-bottom: 30px;
-}
-
-/* aside */
-aside {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  height: 100vh;
-  width: 250px;
-  justify-content: space-between;
-  padding-left: 10px;
-}
-
-.img-logo {
-  position: fixed;
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 12px 10px;
-  text-decoration: none;
-
-  & h1 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 0 0 0 10px;
-    color: var(--text);
-  }
-
-  & img {
-    width: 40px;
-  }
-}
-
-.wrap-my-lists {
-  top: 80px;
-  position: fixed;
-  height: calc(100vh - 60px - 60px);
-  width: 240px;
-
-  & .wrap-chips-detail {
-    width: 40px;
-    height: 30px;
-    background: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(24, 25, 30, 1) 90%
-    );
-    position: absolute;
-    top: 0;
-    left: 200px;
-    pointer-events: none;
-  }
-
-  & .wrap-chips {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    margin-bottom: 10px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
-
-  /* Webkit: scroll oculto por defecto */
-  & .wrap-chips::-webkit-scrollbar {
-    height: 16px; /* <-- altura ya reservada */
-    background: transparent;
-  }
-
-  & .wrap-chips::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    border-radius: 4px;
-  }
-
-  /* Al hacer hover, el thumb aparece */
-  & .wrap-chips:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(80, 80, 80, 0.3);
-  }
-
-  /* Firefox muestra scrollbar fino en hover */
-  & .wrap-chips:hover {
-    scrollbar-width: thin;
-    padding-bottom: 0px;
-  }
-
-  & .chips {
-    background-color: var(--bg-panel-color);
-    scroll-snap-align: start;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-
-  & .chips.active {
-    background-color: var(--violet);
-  }
-
-  & small {
-    font-size: 0.9rem;
-    opacity: 0.6;
-    line-height: 30px;
-  }
-
-  & .my-lists {
-    position: fixed;
-    height: calc(100vh - 200px);
-    overflow-x: auto;
-    width: 240px;
-  }
 }
 
 .btn-new-list {

@@ -6,7 +6,7 @@ import Register from "@/pages/Register";
 import Home from "@/pages/Home";
 import Lists from "@/pages/Lists";
 import ListDetail from "@/pages/ListDetail";
-import CategoryDetail from "@/pages/CategoryDetail";
+import ListasPorCategoria from "@/pages/ListasPorCategoria";
 import PublicListDetail from "@/pages/PublicListDetail";
 import MyLists from "@/pages/MyLists";
 import MyListDetail from "@/pages/MyListDetail";
@@ -21,9 +21,10 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/categorias" element={<ListasPorCategoria />} />
+        <Route path="/categorias/:categoria" element={<ListasPorCategoria />} />
         <Route path="/lists" element={<Lists />} />
         <Route path="/lista/:id" element={<ListDetail />} />
-        <Route path="/categorias/:nombre" element={<CategoryDetail />} />
         <Route path="/listas-publicas/:id" element={<PublicListDetail />} />
         <Route path="/mis-listas" element={<MyLists />} />
         <Route path="/mis-listas/:id" element={<MyListDetail />} />

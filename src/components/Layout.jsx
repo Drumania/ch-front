@@ -5,6 +5,7 @@ const Layout = () => {
   return (
     <div className="container-fluid">
       <Header />
+
       <main>
         <Outlet />
       </main>

@@ -1,5 +1,4 @@
-import { useRef, useState, useEffect } from "react";
-import { Avatar } from "primereact/avatar";
+import { useRef, useState } from "react";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Dialog } from "primereact/dialog";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,21 +6,15 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import AuthForm from "@/components/AuthForm";
 import LanguageSelector from "@/components/LanguageSelector";
+import { useAuth } from "@/context/AuthContext"; // 👈 Importar tu contexto
 
 export default function HeaderUser() {
-  const [user, setUser] = useState(null);
+  const { user, userData } = useAuth(); // 👈 Desde el contexto
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [authMode, setAuthMode] = useState("login");
   const op = useRef(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((u) => {
-      console.log("🔥 Usuario detectado:", u);
-      setUser(u);
-    });
-    return () => unsubscribe();
-  }, []);
   const handleLogout = async () => {
     await signOut(auth);
     navigate("/");
@@ -35,7 +28,7 @@ export default function HeaderUser() {
   return (
     <>
       {user ? (
-        <div className="header-user">
+        <div className="header-user d-flex justify-content-end align-items-center">
           <Link to="/crear-lista" className="me-4">
             <button className="btn-new-list">Crear nueva lista</button>
           </Link>
@@ -44,15 +37,16 @@ export default function HeaderUser() {
             className="d-flex align-items-center cursor-pointer border-end pe-2"
             onClick={(e) => op.current.toggle(e)}
           >
-            <span className="me-2">{user.displayName || user.email}</span>
+            <span className="me-2">{userData?.displayName || user.email}</span>
             <img
               src={
-                user?.photoURL?.length
-                  ? user.photoURL
+                userData?.photoURL?.length
+                  ? userData.photoURL
                   : "/img/defaultavatar.png"
               }
               alt="avatar"
               className="avatar-circle"
+              style={{ width: "40px", height: "40px", objectFit: "cover" }}
             />
             <span className="ms-2 fs-4">☰</span>
           </div>
@@ -72,14 +66,14 @@ export default function HeaderUser() {
             </ul>
           </OverlayPanel>
 
-          <div className="">
+          <div className="ms-3">
             <LanguageSelector />
           </div>
         </div>
       ) : (
-        <div className="d-flex align-items-center">
+        <div className="d-flex justify-content-end align-items-center h-100">
           <button
-            className="btn btn-primary"
+            className="btn-transparent cursor-pointer"
             onClick={() => openAuthDialog("login")}
           >
             Iniciar sesión / Registrarse

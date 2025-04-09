@@ -1,9 +1,10 @@
 // src/components/ThumbList.jsx
 import { Link } from "react-router-dom";
+import { Button } from "primereact/button";
 
-export default function ThumbList({ item }) {
+export default function ThumbList({ item, onToggleFavorite }) {
   return (
-    <li className="thumb-list-item">
+    <li className="thumb-list-item d-flex justify-content-between align-items-center">
       <Link
         to={`/mis-listas/${item.id}`}
         className="d-flex align-items-center gap-3 text-decoration-none"
@@ -19,6 +20,14 @@ export default function ThumbList({ item }) {
           )}
         </div>
       </Link>
+
+      {/* Estrella para marcar favorito */}
+      <Button
+        icon={item.favorite ? "pi pi-star-fill" : "pi pi-star"}
+        className="p-button-text"
+        onClick={() => onToggleFavorite(item)}
+        tooltip={item.favorite ? "Quitar de favoritos" : "Agregar a favoritos"}
+      />
     </li>
   );
 }

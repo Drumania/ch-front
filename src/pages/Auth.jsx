@@ -8,6 +8,8 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 export default function Auth() {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -20,11 +22,13 @@ export default function Auth() {
     e.preventDefault();
     setError("");
     try {
+      let result;
       if (isRegistering) {
-        await createUserWithEmailAndPassword(auth, email, password);
+        result = await createUserWithEmailAndPassword(auth, email, password);
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        result = await signInWithEmailAndPassword(auth, email, password);
       }
+      await saveUserToFirestore(result.user);
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -34,11 +38,28 @@ export default function Auth() {
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      await saveUserToFirestore(result.user);
       navigate("/");
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const saveUserToFirestore = async (user) => {
+    if (!user) return;
+
+    const ref = doc(db, "usuarios", user.uid);
+    await setDoc(
+      ref,
+      {
+        displayName: user.displayName || "",
+        email: user.email,
+        photoURL: user.photoURL || "/img/defaultavatar.png",
+        lastLogin: new Date(),
+      },
+      { merge: true }
+    );
   };
 
   return (

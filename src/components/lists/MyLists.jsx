@@ -3,23 +3,33 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "@/firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import ThumbList from "./ThumbList";
+import { doc, updateDoc } from "firebase/firestore";
 
-export default function MyLists() {
+export default function MyLists({ filter = "My Lists", onRequestLogin }) {
   const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true); // <--- NUEVO
   const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Espera a que Firebase determine si hay un usuario logueado
+  // Detectar usuario logueado
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u);
+      setLoadingUser(false); // <--- NUEVO
     });
     return () => unsub();
   }, []);
 
+  // Cargar listas del usuario
   useEffect(() => {
     const fetchUserLists = async () => {
-      if (!user) return;
+      if (!user) {
+        setItems([]);
+        setFilteredItems([]);
+        setLoading(false);
+        return;
+      }
 
       try {
         const q = query(
@@ -39,9 +49,14 @@ export default function MyLists() {
             highlight: lista.categoria,
             image: obtenerImagenCategoria(lista.categoria),
             progress,
+            isCreator: !lista.idListaPublica,
+            favorite: lista.favorite === true,
+            createdAt: lista.createdAt?.toDate?.() || new Date(0),
           };
         });
+
         setItems(data);
+        setFilteredItems(data);
       } catch (err) {
         console.error("Error al cargar tus listas:", err);
       } finally {
@@ -52,24 +67,72 @@ export default function MyLists() {
     fetchUserLists();
   }, [user]);
 
-  if (loading) return <p className="text-center">Cargando tus listas...</p>;
+  // Filtro dinámico
+  useEffect(() => {
+    let filtradas = [...items];
 
+    if (filter === "Created by me") {
+      filtradas = filtradas.filter((item) => item.isCreator);
+    }
+
+    if (filter === "favorites") {
+      filtradas = filtradas.filter((item) => item.favorite);
+    }
+
+    if (filter === "Latest added") {
+      filtradas.sort((a, b) => b.createdAt - a.createdAt);
+    }
+
+    setFilteredItems(filtradas);
+  }, [filter, items]);
+
+  const toggleFavorite = async (item) => {
+    const ref = doc(db, "listas_usuarios", item.id);
+    const newFav = !item.favorite;
+
+    try {
+      await updateDoc(ref, { favorite: newFav });
+      setItems((prev) =>
+        prev.map((i) => (i.id === item.id ? { ...i, favorite: newFav } : i))
+      );
+    } catch (err) {
+      console.error("Error al actualizar favorito:", err);
+    }
+  };
+
+  // Mostrar loading solo si aún está resolviendo auth
+  if (loadingUser || loading)
+    return <p className="text-center">Cargando tus listas...</p>;
+
+  // Si no hay sesión activa
   if (!user)
-    return <p className="text-center">Iniciá sesión para ver tus listas.</p>;
+    return (
+      <div className="text-center mt-4">
+        <p>Iniciá sesión o registrate para crear y guardar tus listas</p>
+        <button className="btn btn-primary" onClick={onRequestLogin}>
+          Iniciar sesión / Registrarse
+        </button>
+      </div>
+    );
 
   return (
-    <>
-      <ul className="my-lists">
-        {items.length ? (
-          items.map((item) => <ThumbList key={item.id} item={item} />)
-        ) : (
-          <p className="text-center">Aún no agregaste ninguna lista.</p>
-        )}
-      </ul>
-    </>
+    <ul className="my-lists">
+      {filteredItems.length ? (
+        filteredItems.map((item) => (
+          <ThumbList
+            key={item.id}
+            item={item}
+            onToggleFavorite={toggleFavorite}
+          />
+        ))
+      ) : (
+        <p className="text-center">No se encontraron listas.</p>
+      )}
+    </ul>
   );
 }
 
+// Imagen de ejemplo por categoría (reemplazable luego por Firestore)
 function obtenerImagenCategoria(categoria) {
   const imagenes = {
     Viajes: "https://source.unsplash.com/50x50/?travel",

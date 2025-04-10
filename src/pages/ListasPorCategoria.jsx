@@ -81,8 +81,8 @@ export default function ListasPorCategoria() {
   };
 
   return (
-    <div className="listas-por-categoria">
-      <h2 className="titulo-categoria">
+    <div className="listas-por-categoria py-4">
+      <h2 className="titulo-categoria py-3">
         {categoria
           ? `Listas de ${categoria.replaceAll("-", " ")}`
           : "Todas las listas"}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebase/config";
@@ -9,6 +9,9 @@ export default function Navbar() {
   const [categories, setCategories] = useState([]);
   const location = useLocation();
   const activePath = location.pathname;
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -22,22 +25,58 @@ export default function Navbar() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    checkScroll(); // inicial
+
+    el.addEventListener("scroll", checkScroll);
+    window.addEventListener("resize", checkScroll);
+
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [categories]);
+
+  const checkScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth);
+  };
+
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
+  };
+
   return (
     <nav className="category-navbar">
-      {/* Link fijo (Mis Listas) */}
       <Link
         to="/mis-listas"
         className={`category-link fixed-link ${
           activePath === "/mis-listas" ? "active" : ""
         }`}
       >
-        <div style={{ fontSize: "1.4rem" }}>❤️</div>
+        <div style={{ fontSize: "1.4rem" }} className="category-icon">
+          ❤️
+        </div>
         <div style={{ fontSize: "0.8rem" }}>Mis Listas</div>
       </Link>
 
-      {/* Scrollable contenedor con fade */}
-      <div className="category-scroll-wrapper">
-        <div className="category-scroll">
+      <div className="category-scroll-wrapper border-start">
+        {canScrollLeft && (
+          <button className="scroll-btn left" onClick={scrollLeft}>
+            ←
+          </button>
+        )}
+
+        <div className="category-scroll" ref={scrollRef}>
           {[
             { label: "Todas", to: "/categorias", icon: "📋" },
             ...categories,
@@ -54,13 +93,20 @@ export default function Navbar() {
                   activePath === path ? "active" : ""
                 }`}
               >
-                <div style={{ fontSize: "1.4rem" }}>{icon}</div>
+                <div style={{ fontSize: "1.4rem" }} className="category-icon">
+                  {icon}
+                </div>
                 <div style={{ fontSize: "0.8rem" }}>{label}</div>
               </Link>
             );
           })}
         </div>
-        <div className="scroll-fade-right" />
+
+        {canScrollRight && (
+          <button className="scroll-btn right" onClick={scrollRight}>
+            →
+          </button>
+        )}
       </div>
     </nav>
   );

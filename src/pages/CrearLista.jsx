@@ -9,16 +9,26 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { useSlugify } from "@/hooks/useSlugify";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 
 export default function CrearLista() {
   const [titulo, setTitulo] = useState("");
   const [categoria, setCategoria] = useState("");
   const [categoriasDisponibles, setCategoriasDisponibles] = useState([]);
   const [items, setItems] = useState([""]);
+  const [descripcion, setDescripcion] = useState("");
+  const [previewURL, setPreviewURL] = useState("");
+
+  const [imagenArchivo, setImagenArchivo] = useState(null);
   const [guardando, setGuardando] = useState(false);
   const user = auth.currentUser;
 
-  const { slugify } = useSlugify(); // Hook para generar slug
+  const { slugify } = useSlugify();
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -43,6 +53,14 @@ export default function CrearLista() {
   const agregarItem = () => setItems([...items, ""]);
   const quitarItem = (index) => setItems(items.filter((_, i) => i !== index));
 
+  const handleImagenChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImagenArchivo(file);
+      setPreviewURL(URL.createObjectURL(file));
+    }
+  };
+
   const handleGuardar = async () => {
     if (!titulo || !categoria || items.length === 0 || !user) return;
 
@@ -53,11 +71,21 @@ export default function CrearLista() {
 
     if (itemsFiltrados.length === 0) return;
 
-    const slug = slugify(categoria); // genera el slug
-
+    const slug = slugify(categoria);
     setGuardando(true);
 
     try {
+      let urlImagen = "";
+      if (imagenArchivo) {
+        const storage = getStorage();
+        const imgRef = storageRef(
+          storage,
+          `listas/${Date.now()}_${imagenArchivo.name}`
+        );
+        const snap = await uploadBytes(imgRef, imagenArchivo);
+        urlImagen = await getDownloadURL(snap.ref);
+      }
+
       // 1. Guardar en listas_publicas
       const publicRef = await addDoc(collection(db, "listas_publicas"), {
         nombre: titulo,
@@ -66,8 +94,9 @@ export default function CrearLista() {
         creadorId: user.uid,
         createdAt: serverTimestamp(),
         items: itemsFiltrados,
-        descripcion: "", // opcional
+        descripcion: "",
         popularidad: 0,
+        imagen: urlImagen,
       });
 
       // 2. Guardar en listas_usuarios como copia personal
@@ -75,12 +104,14 @@ export default function CrearLista() {
         idListaPublica: publicRef.id,
         userId: user.uid,
         nombre: titulo,
+        descripcion,
         categoria,
         slug_categoria: slug,
         items: itemsFiltrados,
         createdAt: serverTimestamp(),
         completada: false,
         favorite: false,
+        imagen: urlImagen,
       });
 
       alert("✅ Lista creada y guardada correctamente");
@@ -89,6 +120,10 @@ export default function CrearLista() {
       setTitulo("");
       setCategoria("");
       setItems([""]);
+      setDescripcion("");
+      setImagenArchivo(null);
+      setPreviewURL("");
+      setImagenArchivo(null);
     } catch (err) {
       console.error("Error al guardar la lista:", err);
       alert("❌ Ocurrió un error al guardar");
@@ -109,6 +144,17 @@ export default function CrearLista() {
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
           placeholder="Ej: Cosas para hacer en Japón"
+        />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label">Descripción</label>
+        <textarea
+          className="form-control"
+          rows="2"
+          value={descripcion}
+          onChange={(e) => setDescripcion(e.target.value)}
+          placeholder="Breve descripción de la lista"
         />
       </div>
 
@@ -158,6 +204,26 @@ export default function CrearLista() {
         >
           + Agregar ítem
         </button>
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label">Imagen (opcional)</label>
+        <input
+          type="file"
+          accept="image/*"
+          className="form-control"
+          onChange={handleImagenChange}
+        />
+
+        {previewURL && (
+          <div className="mt-2">
+            <img
+              src={previewURL}
+              alt="Preview"
+              style={{ maxWidth: "100%", borderRadius: "8px" }}
+            />
+          </div>
+        )}
       </div>
 
       <button

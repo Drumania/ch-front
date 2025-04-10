@@ -11,6 +11,7 @@ import {
 import { db } from "@/firebase/config";
 import { useSlugify } from "@/hooks/useSlugify";
 import { auth } from "@/firebase/config";
+import ListaThumb from "@/components/ListaThumb";
 
 export default function ListasPorCategoria() {
   const { categoria } = useParams(); // viene como slug en la URL
@@ -92,31 +93,15 @@ export default function ListasPorCategoria() {
       ) : listas.length === 0 ? (
         <p>No hay listas en esta categoría.</p>
       ) : (
-        <ul className="lista-de-listas">
+        // <ul className="lista-de-listas">
+        <ul className="d-flex flex-wrap gap-3">
           {listas.map((lista) => (
-            <li key={lista.id} className="item-lista">
-              <h3>{lista.nombre}</h3>
-
-              <p>{lista.items?.length ?? 0} ítems</p>
-
-              {lista.descripcion && <p>{lista.descripcion}</p>}
-
-              <div className="d-flex gap-2 mt-2">
-                <button
-                  className="btn btn-outline-primary btn-sm"
-                  onClick={() => handleVerLista(lista)}
-                >
-                  👁 Ver lista
-                </button>
-
-                <button
-                  className="btn btn-success btn-sm"
-                  onClick={() => handleAgregarLista(lista)}
-                >
-                  ➕ Agregar a mis listas
-                </button>
-              </div>
-            </li>
+            <ListaThumb
+              key={lista.id}
+              lista={lista}
+              onVer={handleVerLista}
+              onAgregar={handleAgregarLista}
+            />
           ))}
         </ul>
       )}

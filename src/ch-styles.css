@@ -257,10 +257,13 @@ main {
   width: 300px;
   border-radius: 20px;
   overflow: hidden;
+  border: 1px solid var(--text);
+  color: var(--text);
 }
 
 .searchbar-icon {
-  background-color: var(--bg-light);
+  background-color: var(--text);
+  color: var(--text);
   border: none;
   border-radius: 20px 0px 0px 20px;
 }
@@ -450,54 +453,73 @@ main {
 
 /* lista-thumb */
 .lista-thumb {
+  width: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  height: 370px;
-  background-color: var(--bg-color);
-  border-radius: 30px;
-  position: relative;
-  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.lista-thumb:hover {
+  transform: translateY(-4px);
 }
 
-.lista-thumb a.wrap-img {
-  height: 160px;
+.lista-thumb-img img {
   width: 100%;
-  display: block;
-  border-radius: var(--border-radius);
-  float: left;
-  text-decoration: none;
-  position: relative;
+  height: 180px;
+  object-fit: cover;
 }
 
-.lista-thumb a.wrap-img button {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
-
-.lista-thumb > div {
-  padding: 0 10px;
+.lista-thumb-content {
+  padding: 1rem;
   display: flex;
+  flex-direction: column;
+}
+
+.lista-thumb-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-evenly;
-  flex-direction: row;
-  height: 70px;
 }
 
-.lista-thumb a.lista-category {
-  color: var(--text-color);
-  text-decoration: none;
-  font-size: 12px;
-  left: 10px;
-  position: absolute;
-  top: 17px;
+.lista-thumb-categoria {
+  background: #eee;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 999px;
 }
 
-.lista-thumb div h2 {
-  font-weight: bold;
-  margin: 0;
-  font-size: 1.6rem;
+.lista-thumb-items {
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.lista-thumb-descripcion {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.lista-thumb-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.lista-thumb-actions button {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #f3f3f3;
+  transition: background 0.2s ease;
+}
+.lista-thumb-actions button:hover {
+  background: #e0e0e0;
 }
 
 .lista-preview {

@@ -412,6 +412,30 @@ header {
   color: #555;
 }
 
+/* android banner */
+.install-prompt-container {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+}
+
+.install-prompt-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.install-prompt-button:hover {
+  background-color: #0056b3;
+}
+
 /* main */
 main {
   min-height: calc(100vh - 160px);

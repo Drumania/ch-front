@@ -86,8 +86,18 @@ export default function SearchResults() {
 
   return (
     <div className="container py-4">
-      <h2 className="mb-3">Resultados para: “{query}”</h2>
-
+      <div className="d-flex justify-content-between">
+        <h2 className="mb-3">Resultados para: “{query}”</h2>
+        <div className="d-flex justify-content-end mb-3">
+          <button
+            className="btn btn-outline-secondary shadow-sm"
+            type="button"
+            onClick={() => setMostrarFiltros((prev) => !prev)}
+          >
+            {mostrarFiltros ? "Ocultar filtros" : "Ver filtros"}
+          </button>
+        </div>
+      </div>
       {/* Filtros */}
       {mostrarFiltros && (
         <form className="row g-3 mb-4 align-items-end">

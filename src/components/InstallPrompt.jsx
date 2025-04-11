@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
+import { getPlatformInfo } from "@/utils/getPlatformInfo";
 
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
+    const { isAndroid, isStandalone } = getPlatformInfo();
+
     const handler = (e) => {
+      if (!isAndroid || isStandalone) return;
+
       e.preventDefault();
       setDeferredPrompt(e);
       setShowPrompt(true);

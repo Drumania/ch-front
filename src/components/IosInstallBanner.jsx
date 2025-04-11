@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
+import { getPlatformInfo } from "@/utils/getPlatformInfo";
 
 export default function IosInstallBanner() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const isIos = () => {
-      const ua = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipad|ipod/.test(ua);
-    };
-
-    const isInStandaloneMode = () =>
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone;
-
+    const { isIos, isStandalone } = getPlatformInfo();
     const alreadyDismissed = localStorage.getItem("ios-install-dismissed");
 
-    if (isIos() && !isInStandaloneMode() && !alreadyDismissed) {
+    if (isIos && !isStandalone && !alreadyDismissed) {
       setTimeout(() => {
         setShow(true);
       }, 1500);

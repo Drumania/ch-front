@@ -1,19 +1,34 @@
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import { InputText } from "primereact/inputtext";
+import { useNavigate } from "react-router-dom";
 
 export default function Search() {
-  const { t } = useTranslation();
+  const [busqueda, setBusqueda] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (busqueda.trim().length >= 3) {
+      navigate(`/buscar?query=${encodeURIComponent(busqueda.trim())}`);
+    }
+  };
 
   return (
-    <div className="d-flex align-items-center h-100">
+    <div className="search-component w-100">
       <div className="p-inputgroup searchbar-container">
         <InputText
           className="searchbar-input"
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
           placeholder="Buscar Listas..."
-          // placeholder={t("search")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
         />
-        <span className="p-inputgroup-addon searchbar-icon cursor-pointer">
-          <i className="pi pi-search"></i>
+        <span
+          className="p-inputgroup-addon searchbar-icon cursor-pointer"
+          onClick={handleSearch}
+        >
+          <i className="pi pi-search" />
         </span>
       </div>
     </div>

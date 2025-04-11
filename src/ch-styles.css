@@ -202,11 +202,6 @@ header {
   color: inherit;
 }
 
-/* navbar */
-
-.category-navbar {
-}
-
 /* Fijo a la izquierda */
 .fixed-link {
   flex-shrink: 0;
@@ -216,7 +211,7 @@ header {
   color: #555;
 }
 
-/* Wrapper con sombra */
+/* navbar */
 .category-navbar {
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--line-color);
@@ -966,6 +961,35 @@ a.settings-logoff {
   .container-fluid,
   header {
     width: 100%;
+  }
+  header {
+    height: 120px;
+    margin: 0;
+    padding: 10px 0 0;
+  }
+
+  .fix-pad-start {
+    padding-left: 10px;
+  }
+
+  .fix-pad-end {
+    padding-right: 10px;
+  }
+
+  .category-navbar {
+    margin-top: 120px;
+  }
+
+  .searchbar-container {
+    width: 100%;
+    border: none;
+    padding: 0 10px;
+    border-top: 1px solid var(--line-color);
+    border-radius: 0;
+  }
+
+  main {
+    min-height: calc(100vh - 440px);
   }
 
   .scroll-btn {

@@ -12,6 +12,7 @@ import MyLists from "@/pages/MyLists";
 import MyListDetail from "@/pages/MyListDetail";
 import CrearLista from "./pages/CrearLista";
 import PrivateRoute from "./routes/PrivateRoute";
+import SearchResults from "./pages/SearchResults";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/buscar" element={<SearchResults />} />
         <Route path="/categorias" element={<ListasPorCategoria />} />
         <Route path="/categorias/:categoria" element={<ListasPorCategoria />} />
         <Route path="/lists" element={<Lists />} />

@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <>
       <header className="row g-0">
-        <div className="col-6 col-lg-3">
+        <div className="col-6 col-lg-3 fix-pad-start ">
           <Logo />
         </div>
 
@@ -15,8 +15,13 @@ export default function Header() {
           <Search />
         </div>
 
-        <div className="col-5 text-end">
+        <div className="col-6 col-lg-5 fix-pad-end text-end">
           <HeaderUser />
+        </div>
+
+        {/* Mobile: Search debajo de todo */}
+        <div className="col-12 d-block d-lg-none">
+          <Search />
         </div>
       </header>
       <div className="col-12">

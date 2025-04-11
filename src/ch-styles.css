@@ -966,6 +966,14 @@ a.settings-logoff {
 }
 
 @media (max-width: 768px) {
+  .container-fluid,
+  header {
+    width: 100%;
+  }
+
+  header {
+    padding: 1rem 0 1rem 1rem;
+  }
   .scroll-btn {
     display: none !important;
   }

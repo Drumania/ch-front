@@ -6,7 +6,7 @@ import UpdateNotification from "@/components/UpdateNotification";
 
 const Layout = () => {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid g-0">
       <IosInstallBanner />
       <InstallPrompt />
       <UpdateNotification />

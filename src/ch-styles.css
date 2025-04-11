@@ -12,6 +12,7 @@
   --bg-panel-color: #ffffff;
   --white-color: #fafafa;
   --text: #262626;
+
   --line-color: #00000020;
   --bs-border-color: #00000020 !important;
   --dark-line-color: #ccc;
@@ -377,6 +378,37 @@ header {
   height: 100%;
   pointer-events: none;
   background: linear-gradient(to right, transparent, white);
+}
+
+/* banner ios */
+.install-banner-ios {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  background: #ffffff;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.install-banner-ios p {
+  margin: 0 0 0.5rem 0;
+}
+
+.install-banner-ios .close-btn {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #555;
 }
 
 /* main */

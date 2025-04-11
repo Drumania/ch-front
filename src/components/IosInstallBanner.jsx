@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./IosInstallBanner.css";
 
 export default function IosInstallBanner() {
   const [show, setShow] = useState(false);

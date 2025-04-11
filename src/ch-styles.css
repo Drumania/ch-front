@@ -242,18 +242,18 @@ header {
 
 .category-scroll-wrapper {
   position: relative;
-  flex: 1;
   overflow: hidden;
+  flex: 1;
 }
 
 .category-scroll {
   display: flex;
   gap: 0.5rem;
-  overflow-x: hidden;
+  overflow-x: auto;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  padding: 0.5rem 2rem; /* espacio para flechas */
+  padding: 0.5rem 0;
+  -webkit-overflow-scrolling: touch; /* clave en iOS */
+  scrollbar-width: none; /* oculta scrollbar en Firefox */
 }
 
 .category-scroll::after {
@@ -276,7 +276,7 @@ header {
   z-index: 10;
   background: rgb(255, 255, 255);
   background: linear-gradient(
-    270deg,
+    90deg,
     rgba(255, 255, 255, 0) 0%,
     rgba(255, 255, 255, 1) 90%
   );
@@ -286,8 +286,9 @@ header {
   right: 0;
   position: absolute;
 }
+
 .category-scroll::-webkit-scrollbar {
-  display: none; /* Safari/Chrome */
+  display: none; /* oculta scrollbar en Chrome/Safari */
 }
 
 .category-link {

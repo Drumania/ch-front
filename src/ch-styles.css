@@ -39,6 +39,18 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body {
+  height: 100%;
+  overscroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fullscreen {
+  min-height: 100vh;
+  height: 100dvh; /* moderno: toma en cuenta el área real visible */
+}
+
 *,
 *:after,
 *:before {

@@ -11,6 +11,7 @@ export default function SearchResults() {
   const query = searchParams.get("query") || "";
   const [resultados, setResultados] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sugeridas, setSugeridas] = useState([]);
 
   // Filtros desde la URL
   const urlTamanos = searchParams.get("tamanos")?.split(",") || [];
@@ -65,6 +66,16 @@ export default function SearchResults() {
           coincidencias.sort(
             (a, b) => (b.popularidad || 0) - (a.popularidad || 0)
           );
+        }
+
+        if (coincidencias.length === 0) {
+          const populares = snap.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }))
+            .sort((a, b) => (b.popularidad || 0) - (a.popularidad || 0))
+            .slice(0, 20);
+          setSugeridas(populares);
+        } else {
+          setSugeridas([]);
         }
 
         setResultados(coincidencias);
@@ -141,14 +152,38 @@ export default function SearchResults() {
       {loading ? (
         <p>Buscando...</p>
       ) : resultados.length === 0 ? (
-        <p>No se encontraron listas.</p>
+        <>
+          <p>
+            No se encontraron listas para <strong>“{query}”</strong>.
+          </p>
+
+          {sugeridas.length > 0 && (
+            <>
+              <p className="mt-4">
+                Estas son algunas listas populares que te pueden interesar:
+              </p>
+              <ul className="d-flex flex-wrap gap-3 list-unstyled">
+                {sugeridas.map((lista) => (
+                  <li key={lista.id}>
+                    <ListaThumb
+                      lista={lista}
+                      onVer={() => navigate(`/lista/${lista.id}`)}
+                      onAgregar={() => console.log("agregar", lista)}
+                      agregada={false}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </>
       ) : (
         <ul className="d-flex flex-wrap gap-3 list-unstyled">
           {resultados.map((lista) => (
             <li key={lista.id}>
               <ListaThumb
                 lista={lista}
-                onVer={() => console.log("ver", lista)}
+                onVer={() => navigate(`/lista/${lista.id}`)}
                 onAgregar={() => console.log("agregar", lista)}
                 agregada={false}
               />

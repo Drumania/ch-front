@@ -11,6 +11,7 @@ import {
 import { db } from "@/firebase/config";
 import { useSlugify } from "@/hooks/useSlugify";
 import { auth } from "@/firebase/config";
+
 import ListaThumb from "@/components/ListaThumb";
 
 export default function ListasPorCategoria() {
@@ -20,6 +21,8 @@ export default function ListasPorCategoria() {
 
   const [listas, setListas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [listasAgregadas, setListasAgregadas] = useState([]);
+  const user = auth.currentUser;
 
   useEffect(() => {
     const fetchListas = async () => {
@@ -48,6 +51,24 @@ export default function ListasPorCategoria() {
 
     fetchListas();
   }, [categoria]);
+
+  useEffect(() => {
+    const fetchListasUsuario = async () => {
+      if (!user) return;
+
+      try {
+        const ref = collection(db, "listas_usuarios");
+        const q = query(ref, where("userId", "==", user.uid));
+        const snap = await getDocs(q);
+        const data = snap.docs.map((doc) => doc.data().idListaPublica);
+        setListasAgregadas(data); // solo los IDs
+      } catch (error) {
+        console.error("Error al obtener listas del usuario:", error);
+      }
+    };
+
+    fetchListasUsuario();
+  }, [user]);
 
   const handleVerLista = (lista) => {
     navigate(`/lista/${lista.id}`);
@@ -78,6 +99,8 @@ export default function ListasPorCategoria() {
       console.error("Error al duplicar lista:", err);
       alert("❌ Ocurrió un error al agregar la lista.");
     }
+
+    setListasAgregadas((prev) => [...prev, lista.id]);
   };
 
   return (
@@ -101,6 +124,7 @@ export default function ListasPorCategoria() {
               lista={lista}
               onVer={handleVerLista}
               onAgregar={handleAgregarLista}
+              agregada={listasAgregadas.includes(lista.id)}
             />
           ))}
         </ul>

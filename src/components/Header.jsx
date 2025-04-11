@@ -6,12 +6,12 @@ import Navbar from "@/components/header/Navbar";
 export default function Header() {
   return (
     <>
-      <header className="row">
-        <div className="col-3">
+      <header className="row g-0">
+        <div className="col-6 col-lg-3">
           <Logo />
         </div>
 
-        <div className="col-4 text-center">
+        <div className="d-none d-lg-flex col-4 text-center">
           <Search />
         </div>
 

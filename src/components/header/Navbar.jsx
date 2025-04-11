@@ -70,11 +70,7 @@ export default function Navbar() {
       </Link>
 
       <div className="category-scroll-wrapper border-start">
-        {canScrollLeft && (
-          <button className="scroll-btn left" onClick={scrollLeft}>
-            ←
-          </button>
-        )}
+        {canScrollLeft && <button className="scroll-btn left">←</button>}
 
         <div className="category-scroll" ref={scrollRef}>
           {[
@@ -102,11 +98,12 @@ export default function Navbar() {
           })}
         </div>
 
-        {canScrollRight && (
-          <button className="scroll-btn right" onClick={scrollRight}>
-            →
-          </button>
-        )}
+        {canScrollRight && <button className="scroll-btn right">→</button>}
+        {/* Fade izquierdo */}
+        <div className="scroll-fade scroll-fade-left" />
+
+        {/* Fade derecho */}
+        <div className="scroll-fade scroll-fade-right" />
       </div>
     </nav>
   );

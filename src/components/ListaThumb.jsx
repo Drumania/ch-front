@@ -1,30 +1,40 @@
-export default function ListaThumb({ lista, onVer, onAgregar }) {
+import { useState } from "react";
+
+export default function ListaThumb({ lista, onVer, onAgregar, agregada }) {
+  const [imgSrc, setImgSrc] = useState(lista.imagen || "");
+
+  const handleImgError = () => {
+    setImgSrc("https://placehold.co/600x400");
+  };
+
   return (
     <div className="lista-thumb">
       {/* Imagen */}
       <div className="lista-thumb-img">
         <img
-          src={lista.imagen || "https://via.placeholder.com/400x200"}
+          src={imgSrc}
           alt={lista.nombre}
+          onClick={() => onVer(lista)}
+          onError={handleImgError}
         />
       </div>
 
       {/* Contenido */}
       <div className="lista-thumb-content">
-        <div className="lista-thumb-header">
-          <h3>{lista.nombre}</h3>
-          <span className="lista-thumb-categoria">{lista.categoria}</span>
-        </div>
-
-        <p className="lista-thumb-items">{lista.items?.length ?? 0} ítems</p>
-
-        {lista.descripcion && (
-          <p className="lista-thumb-descripcion">{lista.descripcion}</p>
-        )}
+        <h3 onClick={() => onVer(lista)}>{lista.nombre}</h3>
+        <p className="categoria">{lista.categoria}</p>
+        <p>{lista.items?.length ?? 0} ítems</p>
 
         <div className="lista-thumb-actions">
           <button onClick={() => onVer(lista)}>👁 Ver</button>
-          <button onClick={() => onAgregar(lista)}>➕ Agregar</button>
+
+          {agregada ? (
+            <button className="btn btn-secondary" disabled>
+              ✅ Ya agregada
+            </button>
+          ) : (
+            <button onClick={() => onAgregar(lista)}>➕ Agregar</button>
+          )}
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ import LanguageSelector from "@/components/LanguageSelector";
 import { useAuth } from "@/context/AuthContext";
 
 export default function HeaderUser() {
-  const { user, userData } = useAuth();
+  const { user } = useAuth();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [authMode, setAuthMode] = useState("login");
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -37,7 +37,7 @@ export default function HeaderUser() {
             onClick={() => setMenuAbierto(true)}
           >
             <img
-              src={userData?.photoURL || "/img/defaultavatar.png"}
+              src={user?.photoURL || "/img/defaultavatar.png"}
               alt="avatar"
               className="avatar-circle"
               style={{ width: "40px", height: "40px", objectFit: "cover" }}
@@ -55,11 +55,9 @@ export default function HeaderUser() {
               className="d-flex align-items-center cursor-pointer border-end pe-2"
               onClick={(e) => op.current.toggle(e)}
             >
-              <span className="me-2">
-                {userData?.displayName || user.email}
-              </span>
+              <span className="me-2">{user?.displayName || user.email}</span>
               <img
-                src={userData?.photoURL || "/img/defaultavatar.png"}
+                src={user?.photoURL || "/img/defaultavatar.png"}
                 alt="avatar"
                 className="avatar-circle"
                 style={{ width: "40px", height: "40px", objectFit: "cover" }}
